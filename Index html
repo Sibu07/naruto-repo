@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Save Image Example</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+  <style>
+    .container {
+      position: relative;
+      margin: 0 auto;
+      width: 600px;
+      text-align: center;
+    }
+
+    .image {
+      margin-bottom: 20px;
+    }
+
+    .text-input {
+      display: block;
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .save-btn {
+      display: block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      background-color: #333;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .text-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      padding: 10px;
+      background-color: rgba(0, 0, 0, 0.5);
+      color: white;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img class="image" src="https://telegra.ph/file/cf7a717ffb4a885da3e3a.jpg" alt="My Image">
+    <div class="text-overlay"></div>
+    <textarea class="text-input" placeholder="Enter your text here"></textarea>
+    <button class="save-btn">Save Image</button>
+  </div>
+
+  <script>
+    var textOverlay = document.querySelector('.text-overlay');
+    var textInput = document.querySelector('.text-input');
+
+    textInput.addEventListener('keyup', function() {
+      textOverlay.innerHTML = textInput.value;
+    });
+
+    document.querySelector('.save-btn').addEventListener('click', function() {
+      var container = document.querySelector('.container');
+      html2canvas(container).then(function(canvas) {
+        var dataURL = canvas.toDataURL('image/png');
+        var link = document.createElement('a');
+        link.download = 'my-image.png';
+        link.href = dataURL;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      });
+    });
+  </script>
+</body>
+</html>
